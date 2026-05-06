@@ -151,11 +151,11 @@ export default function Dashboard({ transaksi, monthlyData, pembayaranData, erro
               appearance: "none" as const,
             }}
           >
-            <option value="all" style={{ background: "#12121f" }}>Semua Bulan</option>
+            <option value="all" style={{ background: "#bbbbd7" }}>Semua Bulan</option>
             {monthKeys.map((mk) => {
               const [y, m] = mk.split("-");
               const label = new Date(parseInt(y), parseInt(m) - 1, 1).toLocaleString("id-ID", { month: "long", year: "numeric" });
-              return <option key={mk} value={mk} style={{ background: "#12121f" }}>{label}</option>;
+              return <option key={mk} value={mk} style={{ background: "#bbbbd7" }}>{label}</option>;
             })}
           </select>
           <div style={{ ...glass, borderRadius: 12, display: "flex", alignItems: "center", gap: 6, padding: "7px 14px", fontSize: 11, color: "rgba(200,200,255,0.5)" }}>
