@@ -131,7 +131,7 @@ export default function Dashboard({ transaksi, monthlyData, pembayaranData, erro
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <div style={{ width: 8, height: 8, background: "#a78bfa", borderRadius: "50%", boxShadow: "0 0 8px rgba(167,139,250,0.8)" }} />
           <h1 style={{ fontSize: 17, fontWeight: 600, margin: 0, letterSpacing: "-0.01em", fontFamily: "Funnel Display, sans-serif" }}>
-            Dashboard Penjualan
+            Dashboard Penjualan Ananda Collection
           </h1>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
