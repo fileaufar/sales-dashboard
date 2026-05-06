@@ -1,20 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300;400;500;600;700;800&family=Funnel+Sans:wght@300;400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --bg: #0a0a0f;
-  --surface: #111118;
-  --surface2: #18181f;
-  --border: #2a2a38;
-  --accent: #e8ff47;
-  --accent2: #ff6b35;
-  --text: #f0f0f8;
-  --muted: #6b6b80;
-  --green: #47ffb2;
-  --red: #ff4757;
+  --bg: #060610;
+  --glass: rgba(255, 255, 255, 0.06);
+  --glass-hover: rgba(255, 255, 255, 0.10);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-bright: rgba(255, 255, 255, 0.22);
+  --glass-shine: rgba(255, 255, 255, 0.05);
+  --accent: #a78bfa;
+  --accent2: #f472b6;
+  --accent3: #38bdf8;
+  --text: #f0f0ff;
+  --muted: rgba(200, 200, 255, 0.45);
+  --green: #34d399;
+  --red: #f87171;
+  --glow-purple: rgba(167, 139, 250, 0.15);
+  --glow-pink: rgba(244, 114, 182, 0.12);
+  --glow-blue: rgba(56, 189, 248, 0.12);
 }
 
 * { box-sizing: border-box; }
@@ -22,32 +28,68 @@
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'DM Mono', monospace;
+  font-family: 'Funnel Sans', sans-serif;
   margin: 0;
   padding: 0;
   min-height: 100vh;
+  font-weight: 400;
 }
 
-h1, h2, h3, h4 { font-family: 'Syne', sans-serif; }
-
-body::before {
+/* Animated gradient background - morpho wallpaper feel */
+body::after {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  opacity: 0.025;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(167,139,250,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(56,189,248,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 60% 40%, rgba(244,114,182,0.10) 0%, transparent 50%);
   pointer-events: none;
-  z-index: 999;
+  z-index: 0;
+}
+
+body > * { position: relative; z-index: 1; }
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Funnel Display', sans-serif;
+  font-weight: 600;
+}
+
+/* Glass card base */
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Top shine line — iPhone-style inner highlight */
+.glass::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25) 40%, rgba(255,255,255,0.25) 60%, transparent);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.glass:hover {
+  border-color: var(--glass-border-bright);
+  background: var(--glass-hover);
 }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.fade-up { animation: fadeUp 0.5s ease forwards; }
+.fade-up { animation: fadeUp 0.6s cubic-bezier(.22,.68,0,1.2) forwards; }
 .fade-up-1 { animation-delay: 0.05s; opacity: 0; }
-.fade-up-2 { animation-delay: 0.1s; opacity: 0; }
+.fade-up-2 { animation-delay: 0.10s; opacity: 0; }
 .fade-up-3 { animation-delay: 0.15s; opacity: 0; }
-.fade-up-4 { animation-delay: 0.2s; opacity: 0; }
+.fade-up-4 { animation-delay: 0.20s; opacity: 0; }
 .fade-up-5 { animation-delay: 0.25s; opacity: 0; }
-.fade-up-6 { animation-delay: 0.3s; opacity: 0; }
+.fade-up-6 { animation-delay: 0.30s; opacity: 0; }
