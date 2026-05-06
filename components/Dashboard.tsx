@@ -158,7 +158,7 @@ export default function Dashboard({ transaksi, monthlyData, pembayaranData, erro
               return <option key={mk} value={mk} style={{ background: "#bbbbd7" }}>{label}</option>;
             })}
           </select>
-          <div style={{ ...glass, borderRadius: 12, display: "flex", alignItems: "center", gap: 6, padding: "7px 14px", fontSize: 11, color: "rgba(200,200,255,0.5)" }}>
+          <div style={{ ...glass, borderRadius: 12, display: "flex", alignItems: "center", gap: 6, padding: "7px 14px", fontSize: 11, color: "rgba(200,200,255,0.85)" }}>
             <RefreshCw size={11} />
             <span style={{ whiteSpace: "nowrap" }}>Auto-refresh 5 menit</span>
           </div>
