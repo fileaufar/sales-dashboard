@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Dashboard Penjualan",
-  description: "Analisis data penjualan real-time",
+  title: "Dashboard Penjualan Ananda Collection",
+  description: "Analisis data penjualan Ananda Collection",
+  icons: { icon: "/favicon.png" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

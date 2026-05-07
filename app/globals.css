@@ -5,22 +5,23 @@
 @tailwind utilities;
 
 :root {
-  --bg: #060610;
-  --glass: rgba(255, 255, 255, 0.06);
-  --glass-hover: rgba(255, 255, 255, 0.10);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-border-bright: rgba(255, 255, 255, 0.22);
-  --glass-shine: rgba(255, 255, 255, 0.05);
-  --accent: #a78bfa;
-  --accent2: #f472b6;
-  --accent3: #38bdf8;
-  --text: #f0f0ff;
-  --muted: rgba(200, 200, 255, 0.45);
-  --green: #34d399;
-  --red: #f87171;
-  --glow-purple: rgba(167, 139, 250, 0.15);
-  --glow-pink: rgba(244, 114, 182, 0.12);
-  --glow-blue: rgba(56, 189, 248, 0.12);
+  /* Palet dari logo: hitam, krem, teal, emas, abu */
+  --bg:           #0d0d0d;
+  --surface:      rgba(255, 248, 235, 0.05);
+  --surface2:     rgba(255, 248, 235, 0.03);
+  --glass-border: rgba(255, 248, 235, 0.10);
+  --glass-bright: rgba(255, 248, 235, 0.18);
+
+  --teal:   #3ab8c8;   /* biru teal dari logo */
+  --gold:   #d4a017;   /* kuning emas dari logo */
+  --gold2:  #f0c040;   /* emas terang */
+  --cream:  #f5eed8;   /* krem/latar logo */
+  --wave:   #b8bcc4;   /* warna ombak abu */
+
+  --text:   #f5eed8;
+  --muted:  rgba(245, 238, 216, 0.40);
+  --green:  #3ab8c8;
+  --red:    #e05a3a;
 }
 
 * { box-sizing: border-box; }
@@ -29,64 +30,35 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: 'Funnel Sans', sans-serif;
-  margin: 0;
-  padding: 0;
+  margin: 0; padding: 0;
   min-height: 100vh;
   font-weight: 400;
 }
-
-/* Animated gradient background - morpho wallpaper feel */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(167,139,250,0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(56,189,248,0.12) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 40% at 60% 40%, rgba(244,114,182,0.10) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-body > * { position: relative; z-index: 1; }
 
 h1, h2, h3, h4, h5 {
   font-family: 'Funnel Display', sans-serif;
   font-weight: 600;
 }
 
-/* Glass card base */
-.glass {
-  background: var(--glass);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Top shine line — iPhone-style inner highlight */
-.glass::before {
+/* Ambient blobs pakai palet logo */
+body::after {
   content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25) 40%, rgba(255,255,255,0.25) 60%, transparent);
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 10%,  rgba(58,184,200,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 45% at 85% 80%,  rgba(212,160,23,0.10) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 55% 45%,  rgba(245,238,216,0.04) 0%, transparent 50%);
   pointer-events: none;
-  z-index: 2;
+  z-index: 0;
 }
 
-.glass:hover {
-  border-color: var(--glass-border-bright);
-  background: var(--glass-hover);
-}
+body > * { position: relative; z-index: 1; }
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-.fade-up { animation: fadeUp 0.6s cubic-bezier(.22,.68,0,1.2) forwards; }
+.fade-up   { animation: fadeUp 0.6s cubic-bezier(.22,.68,0,1.2) forwards; }
 .fade-up-1 { animation-delay: 0.05s; opacity: 0; }
 .fade-up-2 { animation-delay: 0.10s; opacity: 0; }
 .fade-up-3 { animation-delay: 0.15s; opacity: 0; }
