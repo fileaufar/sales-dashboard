@@ -16,25 +16,21 @@ export async function fetchTransaksi(): Promise<Transaction[]> {
   if (!res.ok) throw new Error("Gagal mengambil data dari Google Sheets");
 
   const text = await res.text();
-  // Google returns JS-like response, strip the wrapper
   const jsonText = text.replace(/^[^(]+\(/, "").replace(/\);?\s*$/, "");
   const json = JSON.parse(jsonText);
 
   const rows = json.table.rows as Array<{ c: Array<{ v: unknown } | null> }>;
   const cols = json.table.cols as Array<{ label: string }>;
 
-  // Find column indices by label (case-insensitive, trimmed)
   const findCol = (keywords: string[]): number =>
     cols.findIndex((c) =>
-      keywords.some((kw) =>
-        c.label?.toLowerCase().trim().includes(kw.toLowerCase())
-      )
+      keywords.some((kw) => c.label?.toLowerCase().trim().includes(kw.toLowerCase()))
     );
 
-  const dateIdx = findCol(["date", "tanggal", "tgl"]);
-  const customerIdx = findCol(["customer", "pelanggan", "nama"]);
-  const totalIdx = findCol(["jumlah uang", "total", "amount", "harga", "pendapatan", "revenue"]);
-  const diskonIdx = findCol(["diskon", "discount"]);
+  const dateIdx       = findCol(["date", "tanggal", "tgl"]);
+  const customerIdx   = findCol(["customer", "pelanggan", "nama"]);
+  const totalIdx      = findCol(["jumlah uang", "total", "amount", "harga", "pendapatan", "revenue"]);
+  const diskonIdx     = findCol(["diskon", "discount"]);
   const pembayaranIdx = findCol(["pembayaran", "payment", "metode"]);
 
   return rows
@@ -42,7 +38,7 @@ export async function fetchTransaksi(): Promise<Transaction[]> {
     .map((row) => {
       const cell = (i: number) => (i >= 0 ? row.c[i] : null);
 
-      // Parse date - Google Sheets dates come as "Date(year,month,day)"
+      // Parse date — handles both Google Sheets Date() and DD/MM/YYYY string
       let dateStr = "";
       const rawDate = cell(dateIdx)?.v;
       if (typeof rawDate === "string" && rawDate.startsWith("Date(")) {
@@ -51,6 +47,10 @@ export async function fetchTransaksi(): Promise<Transaction[]> {
         const m = parseInt(parts[1]) + 1;
         const d = parseInt(parts[2]);
         dateStr = `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+      } else if (typeof rawDate === "string" && /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(rawDate.trim())) {
+        // DD/MM/YYYY
+        const [dd, mm, yyyy] = rawDate.trim().split("/");
+        dateStr = `${yyyy}-${mm.padStart(2, "0")}-${dd.padStart(2, "0")}`;
       } else if (rawDate) {
         dateStr = String(rawDate);
       }
@@ -67,6 +67,7 @@ export async function fetchTransaksi(): Promise<Transaction[]> {
 
 export interface MonthlyData {
   month: string;
+  monthKey: string;
   totalPenjualan: number;
   totalDiskon: number;
   transaksi: number;
@@ -84,7 +85,7 @@ export function groupByMonth(data: Transaction[]): MonthlyData[] {
       year: "numeric",
     });
 
-    const existing = map.get(key) ?? { month: label, totalPenjualan: 0, totalDiskon: 0, transaksi: 0 };
+    const existing = map.get(key) ?? { month: label, monthKey: key, totalPenjualan: 0, totalDiskon: 0, transaksi: 0 };
     existing.totalPenjualan += t.totalPenjualan;
     existing.totalDiskon += t.diskon;
     existing.transaksi += 1;
@@ -103,4 +104,34 @@ export function groupByPembayaran(data: Transaction[]): Record<string, Transacti
     acc[key].push(t);
     return acc;
   }, {} as Record<string, Transaction[]>);
+}
+
+export interface DailyData {
+  day: string;
+  dateKey: string;
+  totalPenjualan: number;
+  totalDiskon: number;
+  transaksi: number;
+}
+
+export function groupByDay(data: Transaction[], monthKey: string): DailyData[] {
+  const map = new Map<string, DailyData>();
+
+  data
+    .filter((t) => t.date.startsWith(monthKey))
+    .forEach((t) => {
+      const existing = map.get(t.date) ?? {
+        day: new Date(t.date + "T00:00:00").toLocaleDateString("id-ID", { day: "numeric", month: "short" }),
+        dateKey: t.date,
+        totalPenjualan: 0,
+        totalDiskon: 0,
+        transaksi: 0,
+      };
+      existing.totalPenjualan += t.totalPenjualan;
+      existing.totalDiskon += t.diskon;
+      existing.transaksi += 1;
+      map.set(t.date, existing);
+    });
+
+  return Array.from(map.values()).sort((a, b) => a.dateKey.localeCompare(b.dateKey));
 }
