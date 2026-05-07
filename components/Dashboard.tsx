@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Image from "next/image";
 import {
   XAxis, YAxis, Tooltip, ResponsiveContainer,
   BarChart, Bar, CartesianGrid, Cell,
@@ -9,7 +8,7 @@ import {
 } from "recharts";
 import {
   TrendingUp, CreditCard, Tag,
-  ChevronDown, ChevronRight, AlertCircle, RefreshCw, ArrowLeft,
+  ChevronDown, ChevronRight, AlertCircle, ArrowLeft,
 } from "lucide-react";
 import type { Transaction, MonthlyData } from "@/lib/sheets";
 import { groupByDay } from "@/lib/sheets";
@@ -169,44 +168,24 @@ export default function Dashboard({ transaksi, monthlyData, pembayaranData, erro
         <div style={{ position: "absolute", bottom: -80, right: -60, width: 380, height: 380, borderRadius: "50%", background: "radial-gradient(circle, rgba(212,160,23,0.10) 0%, transparent 70%)" }} />
       </div>
 
-      {/* ── Header ── */}
-      <header style={{
-        ...glass, borderRadius: 0,
-        borderTop: "none", borderLeft: "none", borderRight: "none",
-        padding: "14px 28px",
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        position: "sticky", top: 0, zIndex: 50,
-        backdropFilter: "blur(32px) saturate(200%)",
-        WebkitBackdropFilter: "blur(32px) saturate(200%)",
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <Image src="/favicon.png" alt="Logo" width={36} height={36} style={{ borderRadius: 8, objectFit: "cover" }} />
-          <h1 style={{ fontSize: 15, fontWeight: 600, margin: 0, letterSpacing: "-0.01em", fontFamily: "Funnel Display, sans-serif", color: "var(--cream)" }}>
-            Dashboard Penjualan Ananda Collection
-          </h1>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-          <select
-            value={selectedMonth}
-            onChange={(e) => { setSelectedMonth(e.target.value); setDrillMonth(null); }}
-            style={selectStyle}
-          >
-            <option value="all" style={{ background: "#111" }}>Semua Bulan</option>
-            {monthKeys.map((mk) => {
-              const [y, m] = mk.split("-");
-              const label = new Date(parseInt(y), parseInt(m) - 1, 1)
-                .toLocaleString("id-ID", { month: "long", year: "numeric" });
-              return <option key={mk} value={mk} style={{ background: "#111" }}>{label}</option>;
-            })}
-          </select>
-          <div style={{ ...glass, borderRadius: 12, display: "flex", alignItems: "center", gap: 6, padding: "7px 14px", fontSize: 11, color: "rgba(245,238,216,0.85)" }}>
-            <RefreshCw size={11} />
-            <span style={{ whiteSpace: "nowrap" }}>Auto-refresh 5 menit</span>
-          </div>
-        </div>
-      </header>
+      {/* ── Filter bar ── */}
+      <div style={{ padding: "14px 32px 0", display: "flex", alignItems: "center", gap: 10 }}>
+        <select
+          value={selectedMonth}
+          onChange={(e) => { setSelectedMonth(e.target.value); setDrillMonth(null); }}
+          style={selectStyle}
+        >
+          <option value="all" style={{ background: "#111" }}>Semua Bulan</option>
+          {monthKeys.map((mk) => {
+            const [y, m] = mk.split("-");
+            const label = new Date(parseInt(y), parseInt(m) - 1, 1)
+              .toLocaleString("id-ID", { month: "long", year: "numeric" });
+            return <option key={mk} value={mk} style={{ background: "#111" }}>{label}</option>;
+          })}
+        </select>
+      </div>
 
-      <main style={{ padding: "28px 32px", maxWidth: 1300, margin: "0 auto", position: "relative", zIndex: 1 }}>
+      <main style={{ padding: "20px 32px 28px", maxWidth: 1300, margin: "0 auto", position: "relative", zIndex: 1 }}>
 
         {/* Error */}
         {error && (
