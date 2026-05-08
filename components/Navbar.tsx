@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Package, RefreshCw } from "lucide-react";
+import { LayoutDashboard, Package, RefreshCw, ExternalLink } from "lucide-react";
 
 const glass: React.CSSProperties = {
   background: "rgba(255,248,235,0.05)",
@@ -16,8 +16,9 @@ export default function Navbar() {
   const path = usePathname();
 
   const navLinks = [
-    { href: "/",       label: "Penjualan",    icon: <LayoutDashboard size={15} /> },
-    { href: "/items",  label: "Barang Terjual", icon: <Package size={15} /> },
+    { href: "/",       label: "Penjualan",      icon: <LayoutDashboard size={15} />, external: false },
+    { href: "/items",  label: "Barang Terjual",  icon: <Package size={15} />,        external: false },
+    { href: "https://www.appsheet.com/start/9fbc59ec-1a10-4b19-b1de-8c0a0a77766e?platform=desktop#appName=Kasir-522846710&vss=H4sIAAAAAAAAA6WOOw7CMBBE7zK1T-AWUSAEDRENpljitWQlsaPYASLLd8fhWwPlzuq9mYSz5csuUt1AHtLnWvMEiaRQTT0rSIWFd3HwrYJQ2FL3CKuBXKAmWIWMfBQvQeQAmb7k5Z_9Alazi9ZYHmbZjBbJEyzvGSvBG0IW6MZIp5bvmwuUc8mMr8fAel_G_DIirNzy2pPTG6-L01AbON8AYQXGd2oBAAA=&view=Transaksi", label: "Buka Kasir", icon: <ExternalLink size={15} />, external: true },
   ];
 
   return (
@@ -46,7 +47,7 @@ export default function Navbar() {
         {navLinks.map((link) => {
           const active = path === link.href;
           return (
-            <Link key={link.href} href={link.href} style={{
+            <Link key={link.href} href={link.href} target={link.external ? "_blank" : undefined} rel={link.external ? "noopener noreferrer" : undefined} style={{
               display: "flex", alignItems: "center", gap: 7,
               padding: "7px 16px", borderRadius: 12, fontSize: 13,
               fontFamily: "Funnel Sans, sans-serif", fontWeight: 500,
