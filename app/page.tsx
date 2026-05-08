@@ -1,7 +1,7 @@
 import { fetchTransaksi, groupByMonth, groupByPembayaran } from "@/lib/sheets";
 import Dashboard from "@/components/Dashboard";
 
-export const revalidate = 300;
+export const revalidate = 60;
 
 export default async function Home() {
   let data: Awaited<ReturnType<typeof fetchTransaksi>> = [];
